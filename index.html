@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Calc</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" type="text/css" media="screen" href="style.css">
+    <script src="main.js"></script>
+</head>
+<body>
+    <div class="wrapper">
+        <div class="row result" id="result-value">0</div>
+        <div class="row">
+            <div class="calc-btn" id="del">CA</div>   
+            <div class="calc-btn" id="calc-back">←</div> 
+            <div class="calc-btn" id="calc-operator">√</div>
+            <div class="calc-btn" id="calc-operator">/</div>    
+        </div>
+        <div class="row">
+            <div class="calc-btn" id="calc-num">7</div>   
+            <div class="calc-btn" id="calc-num">8</div> 
+            <div class="calc-btn" id="calc-num">9</div>
+            <div class="calc-btn" id="calc-operator">*</div> 
+        </div>
+        <div class="row">
+            <div class="calc-btn" id="calc-num">4</div>  
+            <div class="calc-btn" id="calc-num">5</div> 
+            <div class="calc-btn" id="calc-num">6</div>  
+            <div class="calc-btn" id="calc-operator">+</div> 
+        </div>
+        <div class="row">
+            <div class="calc-btn" id="calc-num">1</div>   
+            <div class="calc-btn" id="calc-num">2</div> 
+            <div class="calc-btn" id="calc-num">3</div> 
+            <div class="calc-btn" id="calc-operator">-</div> 
+        </div>
+        <div class="row row-bottom">
+            <div class="calc-btn calc-btn-z" id="calc-num">0</div>  
+            <div class="calc-btn" id="calc-dot">.</div> 
+            <div class="calc-btn" id="calc-operator">=</div>  
+        </div>
+    </div>
+
+    <script>
+
+        let calcNum = document.querySelectorAll('#calc-num'),
+            operator = document.querySelectorAll('#calc-operator'),
+            del = document.querySelector('#del'),
+            dot = document.querySelector('#calc-dot'),
+            calcBack = document.querySelector('#calc-back'),
+            resultVal = document.querySelector('#result-value'),
+            resultValCurrent = '0',
+            oldResult = '',
+            arrResult = [];
+
+        for (let i=0; i<calcNum.length; i++){
+            let num = calcNum[i];
+            num.addEventListener('click', function(e) {
+                if(resultValCurrent.length > 11){
+                 }else{
+                    if(resultValCurrent == '0' ){
+                        resultValCurrent = '';
+                    }else{  
+                        resultValCurrent = resultVal.textContent;
+                    };
+                        resultValCurrent += e.target.textContent;
+                        resultVal.textContent = resultValCurrent;
+                };
+            });      
+        };
+
+        for (let i=0; i < operator.length; i++){
+            let symbolOp = operator[i];
+                symbolOp.addEventListener('click', function(e) {
+                operatorPress(e.target.textContent); 
+            });    
+        };
+
+        function operatorPress(op){
+            if(op === '*'){
+                oldResult=resultValCurrent;
+                resultValCurrent = '0';
+                arrResult.push(oldResult);
+                arrResult.push('*');
+            };
+            if(op === '/'){
+                oldResult=resultValCurrent;
+                resultValCurrent = '0';
+                arrResult.push(oldResult);
+                arrResult.push('/');
+            };
+            if(op === '-'){
+                oldResult=resultValCurrent;
+                resultValCurrent = '0';
+                arrResult.push(oldResult);
+                arrResult.push('-');
+            };
+            if(op === '+'){
+                oldResult=resultValCurrent;
+                resultValCurrent = '0';
+                arrResult.push(oldResult);
+                arrResult.push('+');
+            };
+            if(op === '√'){    
+                resultValCurrent = Math.sqrt(resultValCurrent);
+                resultVal.textContent = resultValCurrent;
+            };
+            if(op === '='){
+                arrResult.push(resultValCurrent);
+                let calac = eval(arrResult.join(' '));
+                resultValCurrent = calac;
+                resultVal.textContent = resultValCurrent;
+                arrResult = [];
+            };
+        }
+       
+        del.addEventListener('click', function() {
+            resultValCurrent = '0';
+            resultVal.textContent = '0';     
+        });
+
+        calcBack.addEventListener('click', function() { 
+            resultValCurrent = resultVal.textContent; 
+            resultValCurrent = resultValCurrent.slice(0, -1);
+            if(resultValCurrent == 0)
+            resultValCurrent = 0;
+            resultVal.textContent = resultValCurrent;
+        });
+
+        dot.addEventListener("click", function() {
+            if(!resultValCurrent.includes('.'))
+            resultVal.textContent += '.';
+            resultValCurrent+= '.';
+        });
+
+    </script>
+
+</body>
+</html>
